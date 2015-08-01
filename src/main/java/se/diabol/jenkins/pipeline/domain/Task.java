@@ -51,6 +51,7 @@ public class Task extends AbstractItem {
     private final List<String> downstreamTasks;
     private final boolean initial;
     private final String description;
+    private final String displayName;
     private final AbstractProject project;
     
     public Task(AbstractProject project, String id, String name, Status status, String link, ManualStep manual, List<String> downstreamTasks,
@@ -65,11 +66,12 @@ public class Task extends AbstractItem {
         this.downstreamTasks = downstreamTasks;
         this.initial = initial;
         this.description = description;
+        this.displayName = null;
         this.project = project;
     }
 
     public Task(Task task, String buildId, Status status, String link, ManualStep manual,
-                    TestResult testResult, String description) {
+                    TestResult testResult, String description, String displayName) {
         super(task.getName());
         this.id = task.id;
         this.downstreamTasks = task.getDownstreamTasks();
@@ -80,6 +82,7 @@ public class Task extends AbstractItem {
         this.testResult = testResult;
         this.initial = task.isInitial();
         this.description = description;
+        this.displayName = displayName;
         this.project = task.project;
     }
 
@@ -127,6 +130,11 @@ public class Task extends AbstractItem {
 	@Exported
     public String getDescription() {
         return description;
+    }
+
+    @Exported
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Exported
@@ -191,7 +199,8 @@ public class Task extends AbstractItem {
         ManualStep manualStep = ManualStep.getManualStepLatest(project, build, firstBuild);
 
         final String buildDescription = (build != null) ? build.getDescription() : "";
-        return new Task(this, taskBuildId, taskStatus, taskLink, manualStep, TestResult.getTestResult(build), buildDescription);
+        return new Task(this, taskBuildId, taskStatus, taskLink, manualStep, TestResult.getTestResult(build), buildDescription,
+                build == null ? null : build.getDisplayName());
     }
 
     public Task getAggregatedTask(AbstractBuild versionBuild, ItemGroup context) {
@@ -204,9 +213,9 @@ public class Task extends AbstractItem {
                 taskLink = currentBuild.getUrl() + "console";
             }
             return new Task(this, String.valueOf(currentBuild.getNumber()), taskStatus, taskLink, this.getManualStep(),
-                    TestResult.getTestResult(currentBuild), currentBuild.getDescription());
+                    TestResult.getTestResult(currentBuild), currentBuild.getDescription(), null);
         } else {
-            return new Task(this, null, StatusFactory.idle(), this.getLink(), this.getManualStep(), null, "");
+            return new Task(this, null, StatusFactory.idle(), this.getLink(), this.getManualStep(), null, "", null);
         }
     }
 

@@ -192,10 +192,21 @@ public class Stage extends AbstractItem {
 
     public Stage createLatestStage(ItemGroup context, AbstractBuild firstBuild) {
         List<Task> stageTasks = new ArrayList<Task>();
+        String versionString = "";
         for (Task task : getTasks()) {
-            stageTasks.add(task.getLatestTask(context, firstBuild));
+            Task latestTask = task.getLatestTask(context, firstBuild);
+
+            if (latestTask.getDisplayName() != null) {
+                if (versionString.length() > 0)
+                {
+                    versionString += " | ";
+                }
+                versionString += latestTask.getDisplayName();
+            }
+
+            stageTasks.add(latestTask);
         }
-        return new Stage(this, stageTasks, null, id);
+        return new Stage(this, stageTasks, versionString.length() > 0 ? versionString : null, id);
 
     }
 

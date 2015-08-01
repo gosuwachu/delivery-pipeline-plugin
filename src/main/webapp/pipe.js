@@ -137,15 +137,16 @@ function refreshPipelines(data, divNames, errorDiv, view, showAvatars, showChang
                     html.push('<div class="pipeline-cell">');
                     html.push('<div id="' + getStageId(stage.id + "", i) + '" class="stage ' + getStageClassName(stage.name) + '">');
                     html.push('<div class="stage-header"><div class="stage-name">' + htmlEncode(stage.name) + '</div>');
-                    if (!pipeline.aggregated) {
-                        html.push('</div>');
-                    } else {
-                        var stageversion = stage.version;
-                        if (!stageversion) {
+
+                    var stageversion = stage.version;
+                    if (!stageversion) {
+                        if (pipeline.aggregated) {
                             stageversion = "N/A"
+                        } else {
+                            stageversion = ""
                         }
-                        html.push(' <div class="stage-version">' + htmlEncode(stageversion) + '</div></div>');
                     }
+                    html.push(' <div class="stage-version">' + htmlEncode(stageversion) + '</div></div>');
 
                     var task, id, timestamp, progress, progressClass;
 
