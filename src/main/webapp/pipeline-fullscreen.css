@@ -76,55 +76,6 @@ div.task-progress {
     color: inherit;
 }
 
-.IDLE {
-    border-left: 6px solid #d3d3d3;
-}
-
-.QUEUED {
-    border-left: 6px solid #2e6e9e;
-}
-
-.FAILED {
-    border-left: 6px solid red;
-    font-weight: bold;
-    color: red;
-    background-color: inherit;
-}
-
-.SUCCESS {
-    border-left: 6px solid #228b22;
-    background-color: inherit;
-}
-
-.UNSTABLE {
-    border-left: 6px solid #fcae3f;
-    font-weight: bold;
-    color: #fcae3f;
-    background-color: inherit;
-}
-
-.CANCELLED {
-    border-left: 6px solid #8b8989;
-    font-weight: bold;
-    background-color: inherit;
-}
-
-.NOT_BUILT {
-    border-left: 6px solid #8b8989;
-    font-weight: bold;
-    background-color: inherit;
-}
-
-.DISABLED {
-    border-left: 6px solid transparent;
-    color: #a9a9a9;
-    background-color: inherit;
-}
-
-.RUNNING {
-    border-left: 6px solid #0092ef;
-}
-
 svg.relation path {
     stroke: #fefefe;
     stroke-width: 3;

@@ -196,12 +196,8 @@ public class Stage extends AbstractItem {
         for (Task task : getTasks()) {
             Task latestTask = task.getLatestTask(context, firstBuild);
 
-            if (latestTask.getDisplayName() != null) {
-                if (versionString.length() > 0)
-                {
-                    versionString += " | ";
-                }
-                versionString += latestTask.getDisplayName();
+            if (latestTask.getDisplayName() != null && versionString.length() == 0) {
+                versionString = latestTask.getDisplayName();
             }
 
             stageTasks.add(latestTask);

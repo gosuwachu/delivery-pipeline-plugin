@@ -235,7 +235,6 @@ function refreshPipelines(data, divNames, errorDiv, view, showAvatars, showChang
 
         var index = 0, source, target;
         lastResponse = data;
-        equalheight(".pipeline-row .stage");
 
         Q.each(data.pipelines, function (i, component) {
             Q.each(component.pipelines, function (j, pipeline) {
@@ -249,7 +248,7 @@ function refreshPipelines(data, divNames, errorDiv, view, showAvatars, showChang
                             plumb.connect({
                                 source: source,
                                 target: target,
-                                anchors: [[1, 0, 1, 0, 0, 37], [0, 0, -1, 0, 0, 37]], // allow boxes to increase in height but keep anchor lines on the top
+                                anchors: ["RightMiddle", "LeftMiddle"],
                                 overlays: [
                                     [ "Arrow", { location: 1}]
                                 ],

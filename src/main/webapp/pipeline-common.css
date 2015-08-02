@@ -80,6 +80,7 @@ div.pipeline-row {
 div.pipeline-cell {
     display: table-cell;
     padding-bottom: 30px;
+    vertical-align: middle;
 }
 
 div.stage {
@@ -228,6 +229,7 @@ div.task-progress-running {
 
 .SUCCESS {
     border-left: 6px solid #228b22;
+    background-color: #1bd130;
 }
 
 .UNSTABLE {
