@@ -177,12 +177,9 @@ public class Stage extends AbstractItem {
         List<Task> stageTasks = new ArrayList<Task>();
 
         //The version build for this stage is the highest first task build
+        String stageVersion = getHighestVersion(getTasks(), firstProject, context);
         AbstractBuild versionBuild = getHighestBuild(getTasks(), firstProject, context);
 
-        String stageVersion = null;
-        if (versionBuild != null) {
-            stageVersion = versionBuild.getDisplayName();
-        }
         for (Task task : getTasks()) {
             stageTasks.add(task.getAggregatedTask(versionBuild, context));
         }
@@ -364,6 +361,33 @@ public class Stage extends AbstractItem {
             }
         }
         return null;
+    }
+
+    private String getHighestVersion(List<Task> tasks, AbstractProject firstProject, ItemGroup context) {
+        for (Task task : tasks) {
+            AbstractProject project = ProjectUtil.getProject(task.getId(), context);
+            AbstractBuild build = getHighestBuild(project, firstProject);
+            if (build != null && build.getDisplayName() != null) {
+                return build.getDisplayName();
+            }
+        }
+        return null;
+    }
+
+    private AbstractBuild getHighestBuild(AbstractProject<?, ?> project, AbstractProject<?, ?> first) {
+        RunList<? extends AbstractBuild> builds = project.getBuilds();
+        AbstractBuild highestUpstream = null;
+        AbstractBuild buildFromHighestUpstreamBuild = null;
+        for (AbstractBuild build : builds) {
+            AbstractBuild upstream = BuildUtil.getFirstUpstreamBuild(build, first);
+            if (upstream != null && upstream.getProject().equals(first)) {
+                if (highestUpstream == null || upstream.getNumber() > highestUpstream.getNumber()) {
+                    highestUpstream = upstream;
+                    buildFromHighestUpstreamBuild = build;
+                }
+            }
+        }
+        return buildFromHighestUpstreamBuild;
     }
 
     @Override
